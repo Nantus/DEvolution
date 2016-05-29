@@ -5,7 +5,7 @@ namespace DSystem {
 	typedef unsigned int UInt;
 
 	struct elem_base_cell {
-		void* element;
+		int element;
 		UInt ID;
 		elem_base_cell* next;
 		elem_base_cell* priv;
@@ -14,13 +14,14 @@ namespace DSystem {
 	class main_elem_base {
 	public:
 		main_elem_base(sUInt);
-		void add_elem_toTail(void*);
-		void add_elem(UInt,void*);
+		void add_elem_toTail(int);
+		void add_elem(UInt,int);
+		elem_base_cell* get_ElemByID(UInt);
+		sUInt get_NumOfElems();
 		void del_elem_FromTail();
 		void del_elem(UInt);
 	private:
 		void correct_ElemsID();
-		elem_base_cell* get_ElemByID(UInt);
 		sUInt num_of_elems;
 		elem_base_cell* Head;
 		elem_base_cell* Tail;

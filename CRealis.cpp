@@ -5,6 +5,7 @@
 #include "DSystem.h"
 
 namespace MAIN_ENV {
+
 	std::string mainEnvironment::getInput() {
 		std::cout << "\n\nUSER[0000]:";
 		std::string inp_obj;
@@ -21,6 +22,16 @@ namespace MAIN_ENV {
 			return showDSys;
 		if (cmdE == "switch to admin space")
 			return toASpace;
+		if (cmdE == "new elemBase" && aSpace)
+			return createNewElemBase;
+		if (cmdE == "show elemBase" && aSpace)
+			return showElemBase;
+		if (cmdE == "elemBase addElem" && aSpace)
+			return addElemToElemBase;
+		if (cmdE == "elemBase delElem" && aSpace)
+			return delElemFromElemBase;
+		if (cmdE == "elemBase changeElem" && aSpace)
+			return changeElemOfElemBase;
 		if (cmdE == "exit")
 			return exitMEnv;
 		
@@ -36,6 +47,16 @@ namespace MAIN_ENV {
 		case showDSys: base.cbShowDSys(tempMemo); break;
 
 		case toASpace: base.cbToASpace(&aSpace); break;
+
+		case createNewElemBase: base.cbCreateNewElemBase(&tempBase); break;
+
+		case showElemBase: base.cbShowElemBase(tempBase); break;
+
+		case addElemToElemBase: base.cbAddElemToElemBase(tempBase); break;
+
+		case delElemFromElemBase: base.cbDelElemFromElemBase(tempBase); break;
+
+		case changeElemOfElemBase: base.cbChangeElemOfElemBase(tempBase); break;
 		
 		case exitMEnv: base.cbExitMainEnv(); break;
 
@@ -64,14 +85,71 @@ namespace MAIN_ENV {
 		std::cout << "\nEnter the name of new system.\n";
 		inp_name = mainEnvironment::getInput();
 		std::cout << "\nEnter the number of dimentions in phase space of system.\n";
-		std::cout << "\n\nUSER[0000]:";
-		std::cin >> inp_dim;
+		inp_dim = atoi(mainEnvironment::getInput().c_str());
 		std::cout << "\nEnter the number of elements in system\n";
-		std::cout << "\n\nUSER[0000]:"; 
-		std::cin >> inp_num_of_elems;
-		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		inp_num_of_elems = atoi(mainEnvironment::getInput().c_str());
 
 		ds_toCr = new DSystem::main_ds(inp_name,inp_dim,inp_num_of_elems);
+	}
+
+	void cmdBase::cbCreateNewElemBase(DSystem::main_elem_base** eb_toCr) {
+		DSystem::sUInt numOfElems;
+		std::cout << "\nEnter the number of elements in base(You could change it later).\n";
+		numOfElems = atoi(mainEnvironment::getInput().c_str());
+		if (*eb_toCr != NULL)
+			delete *eb_toCr;
+		*eb_toCr = new DSystem::main_elem_base(numOfElems);
+	}
+
+	void cmdBase::cbShowElemBase(DSystem::main_elem_base* eb_toShow) {
+		if (eb_toShow != NULL)
+		{
+			for (int i(0); i < eb_toShow->get_NumOfElems(); i++)
+				std::cout << "\n" << eb_toShow->get_ElemByID(i)->element;
+			std::cout << "\n";
+		}
+		else
+			std::cout << "\nThere is no element base to show\n";
+	}
+
+	void cmdBase::cbAddElemToElemBase(DSystem::main_elem_base* eb_toAddElem) {
+		if (eb_toAddElem != NULL)
+		{
+			int inpElem;
+			std::cout << "\nThe element will be added to tail.\n";
+			std::cout << "Enter the element.";
+			inpElem = atoi(mainEnvironment::getInput().c_str());
+			eb_toAddElem->add_elem_toTail(inpElem);
+		}
+		else
+			std::cout << "\nThere is no element base to add element\n";
+	}
+
+	void cmdBase::cbDelElemFromElemBase(DSystem::main_elem_base* eb_toDelElem) {
+		if (eb_toDelElem != NULL)
+		{
+			int delElemID;
+			std::cout << "Enter the element`s ID.";
+			delElemID = atoi(mainEnvironment::getInput().c_str());
+			eb_toDelElem->del_elem(delElemID);
+		}
+		else
+			std::cout << "\nThere is no element base to delete element\n";
+	}
+
+	void cmdBase::cbChangeElemOfElemBase(DSystem::main_elem_base* eb_toChangeElem) {
+		if (eb_toChangeElem != NULL) 
+		{
+			int changeElemID;
+			int newElem;
+			std::cout << "\nEnter the element`s ID.\n";
+			changeElemID = atoi(mainEnvironment::getInput().c_str());
+			std::cout << "\nEnter the new element.\n";
+			newElem = atoi(mainEnvironment::getInput().c_str());
+			eb_toChangeElem->get_ElemByID(changeElemID)->element = newElem; 
+		}
+		else
+			std::cout << "\nThere is no element base to change element\n";
 	}
 
 	void cmdBase::cbChangeToDefault() {

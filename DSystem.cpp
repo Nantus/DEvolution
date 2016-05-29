@@ -6,7 +6,6 @@
 namespace DSystem {
 
 	main_elem_base::main_elem_base(sUInt arg_num_of_elems) {
-		num_of_elems = arg_num_of_elems;
 		Head = new elem_base_cell;
 		Tail = new elem_base_cell;
 		Head->priv = NULL;
@@ -15,6 +14,7 @@ namespace DSystem {
 		Tail->priv = Head;
 		Tail->next = NULL;
 		Tail->ID   = 1;
+		num_of_elems = 2;
 		while (num_of_elems < arg_num_of_elems)
 			add_elem_toTail(NULL);
 	}
@@ -28,8 +28,7 @@ namespace DSystem {
 	}
 
 	void main_elem_base::correct_ElemsID() {
-		elem_base_cell* temp;
-		temp = Head;
+		elem_base_cell* temp = Head;
 		for (int i(0);i < num_of_elems;i++)
 		{
 			if (temp->ID != i)
@@ -38,21 +37,24 @@ namespace DSystem {
 		}
 	}
 
+	sUInt main_elem_base::get_NumOfElems() {
+		return num_of_elems;
+	}
+
 	elem_base_cell* main_elem_base::get_ElemByID(UInt arg_ID) {
 		if (arg_ID >= Tail->ID)
 			return Tail;
-		elem_base_cell* temp;
-		temp = Head;
+		elem_base_cell* temp(Head);
 		while (temp->ID != arg_ID) 
 			temp = temp->next;
 		return temp;
 	}
 
-	void main_elem_base::add_elem(UInt arg_ID,void* arg_pElem = NULL) {
+	void main_elem_base::add_elem(UInt arg_ID,int arg_Elem) {
 		elem_base_cell* privAddElem;
 		elem_base_cell* temp;
 		elem_base_cell* new_pElem = new elem_base_cell;
-		new_pElem->element = arg_pElem;
+		new_pElem->element = arg_Elem;
 		privAddElem = get_ElemByID(arg_ID);
 		temp = privAddElem->next;
 		new_pElem->priv = privAddElem;
@@ -62,10 +64,10 @@ namespace DSystem {
 		correct_ElemsID();
 	}
 
-	void main_elem_base::add_elem_toTail(void* arg_pElem = NULL) {
+	void main_elem_base::add_elem_toTail(int arg_Elem) {
 		elem_base_cell* temp;
 		elem_base_cell* new_pElem = new elem_base_cell;
-		new_pElem->element = arg_pElem;
+		new_pElem->element = arg_Elem;
 		temp = Tail;
 		Tail = new_pElem;
 		temp->next = Tail;
@@ -86,10 +88,20 @@ namespace DSystem {
 	}
 
 	void main_elem_base::del_elem(UInt arg_ID) {
-		elem_base_cell* pDelElem;
-		pDelElem = get_ElemByID(arg_ID);
-		pDelElem->priv->next = pDelElem->next;
-		delete pDelElem;
+		elem_base_cell* temp;
+		if (arg_ID != 0) 
+		{
+			temp = get_ElemByID(arg_ID);
+			temp->priv->next = temp->next;
+			delete temp;
+		}
+		else
+		{
+			temp = Head;
+			Head = Head->next;
+			delete temp;
+			Head->priv = NULL;
+		}
 		num_of_elems -= 1;
 		correct_ElemsID();
 	}
