@@ -1,7 +1,7 @@
 #include <string>
 #include "DSystem.h"
 #include <stdlib.h>
-#include <list>
+#include "Multiplex.h"
 
 namespace DSystem {
 
@@ -19,8 +19,8 @@ namespace DSystem {
 			add_elem_toTail(NULL);
 	}
 
-	phase_space::phase_space(sUInt dim_args) {
-		dimentionsN = dim_args;
+	phase_space::phase_space(sUInt argNDim): space((int)argNDim, machine_infinity) {
+		
 	}
 
 	main_ds::main_ds(std::string name_arg = "Default", sUInt ph_DimSpase_arg = 2, sUInt meb_num_of_elems = 0) : main_ps(ph_DimSpase_arg),MEB(meb_num_of_elems) {

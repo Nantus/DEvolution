@@ -1,4 +1,7 @@
 #pragma once
+#include "Multiplex.h"
+
+#define machine_infinity 100
 
 namespace DSystem {
 	typedef unsigned short int sUInt;
@@ -31,6 +34,7 @@ namespace DSystem {
 	public:
 		phase_space(sUInt);
 	private:
+		multiplex<double> space;
 		sUInt dimentionsN;
 	};
 
