@@ -1,22 +1,26 @@
 #pragma once
 
-template <typename myType>
 class multiplex {
 public:
 	multiplex();
 	multiplex(int,int); //when hypercube
-	myType getElem(int*);
-	myType getElem();
+	~multiplex();
+	double getElem(int*);
+	double getElem();
 	void changeIndex(int*);
-	void cnangeElem(myType);
-	void changeElem(int*,myType);
-	multiplex& operator [] (int);
-	operator myType&();
-	multiplex& operator = (myType);
+	void changeElem(double);
+	void changeElem(int*,double);
+	int getNDimentions();
+	int getNElems();
+	int getIndex();
+	multiplex& operator [](int);
+	operator double& ();
+	multiplex& operator = (double);
 private:
+	void clear();
 	int _index;
 	int nDimentions;
 	int nElems;
 	int _dim;
-	myType* _multiplex;
+	double* _multiplex;
 };

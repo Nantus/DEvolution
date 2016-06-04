@@ -1,44 +1,63 @@
-
 #include "Multiplex.h"
+#include "MyMath.h"
 
-template <typename myType>
-multiplex<myType>::multiplex(): index(0),nDimentions(0),nElems(0),_dim(0) {
+multiplex::multiplex(): _index(1), nDimentions(0), nElems(0), _dim(0) {
+
 }
 
-template <typename myType>
-multiplex<myType>::multiplex(int argNDimentions, int argNElems): nDimentions(argNDimentions),nElems(argNElems),_index(0),_dim(0) {
+multiplex::multiplex(int argNDimentions, int argNElems) : nDimentions(argNDimentions), nElems(argNElems), _index(1), _dim(0) {
 	int count = 1;
 	for (int i(0); i < nDimentions; i++)
 		count *= nElems;
 
-	_multiplex = new myType[count];
+	_multiplex = new double[count];
+	clear();
 }
 
-template <typename myType>
-multiplex<myType>& multiplex<myType>::operator [](int index) {
+multiplex::~multiplex() {
+	delete[]_multiplex;
+}
+
+double multiplex::getElem(int* argIndex) {
+	changeIndex(argIndex);
+	return _multiplex[_index];
+}
+
+double multiplex::getElem() {
+	return _multiplex[_index];
+}
+
+void multiplex::changeIndex(int* argIndex) {
+	_index = 1;
+	for (int i(0); i < nDimentions; i++)
+		_index += (argIndex[i] - 1)*power(nElems, nDimentions - i - 1);
+	_index -= nDimentions;
+}
+
+void multiplex::changeElem(double argElem) {
+	_multiplex[_index] = argElem;
+}
+
+void multiplex::changeElem(int* argIndex, double argElem) {
+	changeIndex(argIndex);
+	_multiplex[_index] = argElem;
+}
+
+multiplex& multiplex::operator [](int index) {
+	_index += (index-1)*power(nElems,nDimentions-_dim-1);
 	_dim++;
-
-	int count = 1;
-	for (int i(0); i < nDimentions - _dim; i++)
-		count *= nElems;
-
-	_index += index*count; 
-
 	return *this;
 }
 
-template <typename myType>
-multiplex<myType>::operator myType& () {
-	int n = _index;
+multiplex::operator double& () {
+	int n = _index-nDimentions;
 	_index = 0;
 	_dim = 0;
 
 	return _multiplex[n];
 }
-
-template <typename myType>
-multiplex<myType>& multiplex<myType>::operator = (myType argNValue) {
-	int n = _index;
+multiplex& multiplex::operator = (double argNValue) {
+	int n = _index-nDimentions;
 	_index = 0;
 	_dim = 0;
 
@@ -46,9 +65,19 @@ multiplex<myType>& multiplex<myType>::operator = (myType argNValue) {
 	return *this;
 }
 
-template <typename myType>
-myType multiplex<myType>::getElem(int* argIndex) {
-/*	int index=0;
-	for (int i(0); i < nDimentions; i++)
-		index += (argIndex[i] - 1)*(nElems-i);*/
+void multiplex::clear() {
+	for (int i(0); i < power(nElems, nDimentions); i++)
+		_multiplex[i] = 0.000;
+}
+
+int multiplex::getNDimentions() {
+	return nDimentions;
+}
+
+int multiplex::getNElems() {
+	return nElems;
+}
+
+int multiplex::getIndex() {
+	return _index;
 }

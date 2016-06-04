@@ -9,6 +9,7 @@ int main(){
 	while (1) {
 		mEnv.changeState(mainEnvironment::getInput()); // Main infinite cicle. Funcltion waiting for command from std::cin.
 	}
+
 	std::cin.get();
 	return 0;
 }

@@ -34,7 +34,7 @@ namespace DSystem {
 	public:
 		phase_space(sUInt);
 	private:
-		multiplex<double> space;
+		multiplex space;
 		sUInt dimentionsN;
 	};
 
