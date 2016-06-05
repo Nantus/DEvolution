@@ -16,7 +16,7 @@ public:
 	multiplex& operator [](int);
 	operator double& ();
 	multiplex& operator = (double);
-private:
+protected:
 	void clear();
 	int _index;
 	int nDimentions;

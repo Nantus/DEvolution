@@ -19,7 +19,8 @@ namespace DSystem {
 			add_elem_toTail(NULL);
 	}
 
-	phase_space::phase_space(sUInt argNDim): space(argNDim,machine_infinity) {
+	phase_space::phase_space(sUInt argNDim): multiplex(argNDim,machine_infinity) {
+	
 	}
 
 	main_ds::main_ds(std::string name_arg = "Default", sUInt ph_DimSpase_arg = 2, sUInt meb_num_of_elems = 0) : main_ps(ph_DimSpase_arg),MEB(meb_num_of_elems) {
@@ -104,4 +105,11 @@ namespace DSystem {
 		num_of_elems -= 1;
 		correct_ElemsID();
 	}
+	
+	main_elem_base::~main_elem_base() {
+		for (int i(0); i < num_of_elems; i++)
+			del_elem(i);
+		delete Head;
+	}
 };
+

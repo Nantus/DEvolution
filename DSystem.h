@@ -17,6 +17,7 @@ namespace DSystem {
 	class main_elem_base {
 	public:
 		main_elem_base(sUInt);
+		~main_elem_base();
 		void add_elem_toTail(int);
 		void add_elem(UInt,int);
 		elem_base_cell* get_ElemByID(UInt);
@@ -30,12 +31,11 @@ namespace DSystem {
 		elem_base_cell* Tail;
 	};
 
-	class phase_space {
+	class phase_space: public multiplex {
 	public:
 		phase_space(sUInt);
+
 	private:
-		multiplex space;
-		sUInt dimentionsN;
 	};
 
 	class main_ds {

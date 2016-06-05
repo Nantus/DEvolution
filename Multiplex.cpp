@@ -15,7 +15,7 @@ multiplex::multiplex(int argNDimentions, int argNElems) : nDimentions(argNDiment
 }
 
 multiplex::~multiplex() {
-	delete[]_multiplex;
+	delete []_multiplex;
 }
 
 double multiplex::getElem(int* argIndex) {
@@ -30,7 +30,7 @@ double multiplex::getElem() {
 void multiplex::changeIndex(int* argIndex) {
 	_index = 1;
 	for (int i(0); i < nDimentions; i++)
-		_index += (argIndex[i] - 1)*power(nElems, nDimentions - i - 1);
+		_index += (argIndex[i] - 1)*myMath::power(nElems, nDimentions - i - 1);
 	_index -= nDimentions;
 }
 
@@ -44,7 +44,7 @@ void multiplex::changeElem(int* argIndex, double argElem) {
 }
 
 multiplex& multiplex::operator [](int index) {
-	_index += (index-1)*power(nElems,nDimentions-_dim-1);
+	_index += (index-1)*myMath::power(nElems,nDimentions-_dim-1);
 	_dim++;
 	return *this;
 }
@@ -66,7 +66,7 @@ multiplex& multiplex::operator = (double argNValue) {
 }
 
 void multiplex::clear() {
-	for (int i(0); i < power(nElems, nDimentions); i++)
+	for (int i(0); i < myMath::power(nElems, nDimentions); i++)
 		_multiplex[i] = 0.000;
 }
 

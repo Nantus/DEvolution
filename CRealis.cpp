@@ -2,9 +2,11 @@
 #include <iostream>
 #include <string>
 #include "main.h"
+#include "Script.h"
 #include "DSystem.h"
 
 namespace MAIN_ENV {
+	Script script;
 
 	std::string mainEnvironment::getInput() {
 		std::cout << "\n\nUSER[0000]:";
@@ -20,6 +22,12 @@ namespace MAIN_ENV {
 			return delDSys;
 		if (cmdE == "show dsystem")
 			return showDSys;
+		if (cmdE == "script run")
+			return runScript;
+		if (cmdE == "script init")
+			return initScript;
+		if (cmdE == "script close")
+			return closeScript;
 		if (cmdE == "switch to admin space")
 			return toASpace;
 		if (cmdE == "new elemBase" && aSpace)
@@ -57,7 +65,13 @@ namespace MAIN_ENV {
 		case delElemFromElemBase: base.cbDelElemFromElemBase(tempBase); break;
 
 		case changeElemOfElemBase: base.cbChangeElemOfElemBase(tempBase); break;
-		
+
+		case initScript: base.cbInitScript(); break;
+
+		case runScript: base.cbRunScript(); break;
+
+		case closeScript: base.cbCloseScript(); break;
+
 		case exitMEnv: base.cbExitMainEnv(); break;
 
 		case indefState: base.cbUnknownCmd(); break;
@@ -96,13 +110,13 @@ namespace MAIN_ENV {
 		DSystem::sUInt numOfElems;
 		std::cout << "\nEnter the number of elements in base(You could change it later).\n";
 		numOfElems = atoi(mainEnvironment::getInput().c_str());
-		if (*eb_toCr != NULL)
+		if (*eb_toCr != nullptr)
 			delete *eb_toCr;
 		*eb_toCr = new DSystem::main_elem_base(numOfElems);
 	}
 
 	void cmdBase::cbShowElemBase(DSystem::main_elem_base* eb_toShow) {
-		if (eb_toShow != NULL)
+		if (eb_toShow != nullptr)
 		{
 			for (int i(0); i < eb_toShow->get_NumOfElems(); i++)
 				std::cout << "\n" << eb_toShow->get_ElemByID(i)->element;
@@ -113,7 +127,7 @@ namespace MAIN_ENV {
 	}
 
 	void cmdBase::cbAddElemToElemBase(DSystem::main_elem_base* eb_toAddElem) {
-		if (eb_toAddElem != NULL)
+		if (eb_toAddElem != nullptr)
 		{
 			int inpElem;
 			std::cout << "\nThe element will be added to tail.\n";
@@ -126,7 +140,7 @@ namespace MAIN_ENV {
 	}
 
 	void cmdBase::cbDelElemFromElemBase(DSystem::main_elem_base* eb_toDelElem) {
-		if (eb_toDelElem != NULL)
+		if (eb_toDelElem != nullptr)
 		{
 			int delElemID;
 			std::cout << "Enter the element`s ID.";
@@ -138,7 +152,7 @@ namespace MAIN_ENV {
 	}
 
 	void cmdBase::cbChangeElemOfElemBase(DSystem::main_elem_base* eb_toChangeElem) {
-		if (eb_toChangeElem != NULL) 
+		if (eb_toChangeElem != nullptr) 
 		{
 			int changeElemID;
 			int newElem;
@@ -152,6 +166,18 @@ namespace MAIN_ENV {
 			std::cout << "\nThere is no element base to change element\n";
 	}
 
+	void cmdBase::cbInitScript() {
+		script.Create();
+		//Register some functions
+	}
+
+	void cmdBase::cbRunScript() {
+		script.DoFile("Script.lua");
+	}
+
+	void cmdBase::cbCloseScript() {
+		script.Close();
+	}
 	void cmdBase::cbChangeToDefault() {
 		std::cout << "\nI`m changing state to default!\n";
 	}

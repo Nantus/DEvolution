@@ -15,6 +15,9 @@
 #define addElemToElemBase    8     
 #define delElemFromElemBase  9
 #define changeElemOfElemBase 10
+#define runScript			 11
+#define initScript			 12
+#define closeScript			 13
 
 namespace MAIN_ENV 
 {
@@ -31,6 +34,9 @@ namespace MAIN_ENV
 		void cbAddElemToElemBase(DSystem::main_elem_base*);
 		void cbDelElemFromElemBase(DSystem::main_elem_base*);
 		void cbChangeElemOfElemBase(DSystem::main_elem_base*);
+		void cbRunScript();
+		void cbInitScript();
+		void cbCloseScript();
 		void cbExitMainEnv();
 		void cbUnknownCmd();
 	};
